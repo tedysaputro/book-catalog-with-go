@@ -102,7 +102,7 @@ func (h *PublisherHandler) GetPublisher(c *fiber.Ctx) error {
 
 // GetPublishers handles GET /publishers request
 func (h *PublisherHandler) GetPublishers(c *fiber.Ctx) error {
-	page := uint(c.QueryInt("p", 1))
+	page := uint(c.QueryInt("pages", 1))
 	limit := uint(c.QueryInt("limit", 10))
 	sortBy := c.Query("sortBy", "id")
 	direction := c.Query("direction", "asc")

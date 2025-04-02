@@ -38,6 +38,24 @@ VALUES (14, 'Random House', 'Penerbit buku internasional yang berbasis di Amerik
 INSERT INTO public.publishers (id, name, description, created_at, updated_at)
 VALUES (15, 'Hamish Hamilton', 'Penerbit Inggris yang merupakan bagian dari Penguin Books, terkenal menerbitkan karya-karya fiksi sastra berkualitas tinggi', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+-- Insert initial categories
+INSERT INTO public.categories (id, code, name, description, created_at, updated_at)
+VALUES (1, 'FIC', 'Fiction', 'Books that tell stories from imagination', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO public.categories (id, code, name, description, created_at, updated_at)
+VALUES (2, 'NFIC', 'Non-Fiction', 'Books based on facts and real events', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO public.categories (id, code, name, description, created_at, updated_at)
+VALUES (3, 'SCI', 'Science', 'Books about scientific topics and discoveries', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO public.categories (id, code, name, description, created_at, updated_at)
+VALUES (4, 'TECH', 'Technology', 'Books about computers, programming, and technology', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO public.categories (id, code, name, description, created_at, updated_at)
+VALUES (5, 'BIO', 'Biography', 'Books about the life stories of real people', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+-- update sequence of category to 6
+ALTER SEQUENCE categories_id_seq RESTART WITH 6;
 
 -- update sequence of publisher to 16
 ALTER SEQUENCE publishers_id_seq RESTART WITH 16;

@@ -1,0 +1,151 @@
+# Go Fiber Project Guidelines
+
+## AI Persona/Core
+1. You are an experience Senior Go Fiber Developer
+
+## Technology Stack
+1. Go 1.22
+2. Fiber v2
+3. GORM v2
+4. PostgreSQL
+5. Docker
+6. Docker Compose
+
+## Core Architecture Principles
+- **SOLID, DRY, KISS, YAGNI, OWASP** principles must be followed
+- Use best practices for Go Fiber development
+- Using Domain Driven Design : each domain grouped in its own folder/package
+- Layer Separation at each domain
+    - Handler: Handle HTTP requests/responses only, follow Open API specs if available
+    - Service: Business Logic Layer
+    - Data Active Record: Model and operation database in one file
+    - DTO: Data Transfer Objects
+- each service, handler, routes and data active record registered in `routes.go`
+
+## Implementation Rules
+### Models and Repositories
+- Using Active Record Pattern
+- Use GORM tags for database mapping
+- naming file : <model_name>.go
+- naming struct : <ModelName>
+
+### Services
+- Naming file: <service_name>_service.go : Interface and implementation in one file
+- Naming struct: <ServiceName>
+- Interface naming: <EntityName>Service
+- Implementation naming: <entityName>ServiceImpl
+- Standard methods:
+    - Create<Entity>
+    - Get<Entity>
+    - Get<Entity>s (with pagination)
+    - Update<Entity>
+    - Delete<Entity>
+- Error handling patterns:
+    - Domain-specific errors
+    - Error wrapping
+    - Early returns
+
+
+### Handlers
+- Handler file and routing file: <handler_name>_handler.go
+- Naming struct: <HandlerName>
+- Standard endpoints:
+    ```
+    GET    /          # List all with pagination
+    GET    /:id       # Get single resource
+    POST   /          # Create new resource
+    PUT    /:id       # Update resource
+    DELETE /:id       # Soft delete resource
+    ```
+- Query parameters:
+    - p (page number, default: 1)
+    - limit (items per page, default: 10)
+    - sortBy (field name, default: "id")
+    - direction (asc/desc, default: "asc")
+    - {entity}Name (filter by name)
+
+### DTOs
+- Request/Response separation
+- Standard response formats:
+    ```go
+    // List response
+    type EntityListResponse struct {
+        Entities []EntityDetailResponse `json:"data"`
+        Page     uint                  `json:"page"`
+        Total    uint64                `json:"total"`
+    }
+
+    // Detail response
+    type EntityDetailResponse struct {
+        ID          uint      `json:"id"`
+        Name        string    `json:"name"`
+        Description string    `json:"description"`
+        CreatedAt   time.Time `json:"created_at"`
+        UpdatedAt   time.Time `json:"updated_at"`
+    }
+
+    // Request format
+    type EntityRequest struct {
+        Name        string `json:"name"`
+        Description string `json:"description"`
+    }
+    ```
+
+### Error Handling
+- HTTP status codes:
+    - 200: Success (GET/PUT)
+    - 201: Created (POST)
+    - 400: Bad Request
+    - 404: Not Found
+    - 500: Internal Server Error
+- Error response format:
+    ```json
+    {
+        "error": "Error message"
+    }
+    ```
+
+### Database Configuration
+- Connection management in database.go
+- Auto-migration support
+- Model registration in InitDB
+- Soft delete enabled by default
+- Connection pooling configured
+
+### Project Structure
+```
+.
+├── bin/                # Compiled binaries
+├── configs/           # Configuration files
+│   ├── ddl.sql       # Database schema
+│   └── init-db.sql   # Initial data
+├── src/               # Source code
+│   ├── author/        # Author domain
+│   │   ├── author.go          # Author model and database operations
+│   │   ├── author_dto.go      # Data Transfer Objects
+│   │   ├── author_handler.go  # HTTP handlers
+│   │   └── author_service.go  # Business logic
+│   ├── publisher/     # Publisher domain
+│   │   ├── publisher.go       # Publisher model and database operations
+│   │   └── publisher_service.go # Business logic
+│   ├── database.go    # Database configuration
+│   └── main.go        # Application entry point
+├── tests/             # Test files
+├── compose.yml        # Docker Compose configuration
+├── go.mod            # Go modules file
+└── Makefile          # Build automation
+```
+
+### Testing Guidelines
+- Unit tests for business logic
+- Integration tests for API endpoints
+- Table-driven tests
+- Mock interfaces for testing
+- Test file naming: <package>_test.go
+
+### Security
+- Input validation
+- SQL injection prevention via GORM
+- Proper error messages (no sensitive info)
+- Request validation
+- Secure headers
