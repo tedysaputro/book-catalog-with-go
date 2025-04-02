@@ -44,6 +44,14 @@ func (a *Author) Create() error {
 	return db.Create(a).Error
 }
 
+// update author record base on id
+func (a *Author) Update() error {
+	if a.ID == 0 {
+		return errors.New("cannot update author without ID")
+	}
+	return db.Save(a).Error
+}
+
 // FindByID retrieves an Author by ID
 func FindByID(id uint) (*Author, error) {
 	var author Author
@@ -86,14 +94,6 @@ func GetTotalCount(authorName string) (int64, error) {
 		return 0, err
 	}
 	return count, nil
-}
-
-// Update modifies an existing Author record
-func (a *Author) Update() error {
-	if a.ID == 0 {
-		return errors.New("cannot update author without ID")
-	}
-	return db.Save(a).Error
 }
 
 // Delete removes an Author record (soft delete)

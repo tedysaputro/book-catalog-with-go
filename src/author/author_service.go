@@ -4,9 +4,10 @@ import "strconv"
 
 // AuthorService defines the interface for author operations
 type AuthorService interface {
-	createAuthor(request AuthorCreateRequest) (*AuthorCreateResponse, error)
+	createAuthor(request AuthorRequest) (*AuthorCreateResponse, error)
 	GetAuthor(id uint) (*AuthorDetailResponse, error)
 	GetAuthors(p uint, limit uint, sortBy string, direction string, authorName string) (*AuthorListResponse, error)
+	UpdateAuthor(id uint, request AuthorRequest) (*AuthorDetailResponse, error)
 }
 
 type authorServiceImpl struct{}
@@ -17,7 +18,7 @@ func NewAuthorService() AuthorService {
 }
 
 // createAuthor creates a new author
-func (s *authorServiceImpl) createAuthor(request AuthorCreateRequest) (*AuthorCreateResponse, error) {
+func (s *authorServiceImpl) createAuthor(request AuthorRequest) (*AuthorCreateResponse, error) {
 	author := &Author{
 		Name:        request.Name,
 		Description: request.Description,
@@ -33,6 +34,29 @@ func (s *authorServiceImpl) createAuthor(request AuthorCreateRequest) (*AuthorCr
 
 	dto := &AuthorCreateResponse{
 		ID: author.ID,
+	}
+
+	return dto, nil
+}
+
+// Update Author by ID
+func (s *authorServiceImpl) UpdateAuthor(id uint, request AuthorRequest) (*AuthorDetailResponse, error) {
+	author, err := FindByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	author.Name = request.Name
+	author.Description = request.Description
+
+	if err := author.Update(); err != nil {
+		return nil, err
+	}
+
+	dto := &AuthorDetailResponse{
+		ID:          author.ID,
+		Name:        author.Name,
+		Description: author.Description,
 	}
 
 	return dto, nil
@@ -70,8 +94,8 @@ func (s *authorServiceImpl) GetAuthors(p uint, limit uint, sortBy string, direct
 	}
 
 	return &AuthorListResponse{
-		Result:  dtos,
-		Pages:   p,
+		Result:   dtos,
+		Pages:    p,
 		Elements: el,
 	}, nil
 }

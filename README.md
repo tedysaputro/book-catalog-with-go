@@ -5,6 +5,7 @@ A RESTful API for managing a book catalog, built with Go and PostgreSQL.
 ## Prerequisites
 
 - Go 1.x or higher
+- PostgreSQL 16 or higher
 - Docker and Docker Compose
 - Make (optional, for using Makefile commands)
 

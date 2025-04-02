@@ -1,6 +1,8 @@
 package author
 
-import "github.com/gofiber/fiber/v2"
+import (
+	"github.com/gofiber/fiber/v2"
+)
 
 // AuthorHandler handles HTTP requests for author operations
 type AuthorHandler struct {
@@ -9,17 +11,21 @@ type AuthorHandler struct {
 
 // NewAuthorHandler creates a new instance of AuthorHandler
 func NewAuthorHandler(service AuthorService) *AuthorHandler {
-	return &AuthorHandler{
-		service: service,
-	}
+	return &AuthorHandler{service: service}
 }
 
 // CreateAuthor handles POST /authors request
 func (h *AuthorHandler) CreateAuthor(c *fiber.Ctx) error {
-	var request AuthorCreateRequest
+	var request AuthorRequest
 	if err := c.BodyParser(&request); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request body",
+		})
+	}
+
+	if request.Name == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Name is required",
 		})
 	}
 
@@ -33,6 +39,43 @@ func (h *AuthorHandler) CreateAuthor(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusCreated).JSON(dto)
 }
 
+// UpdateAuthor handles PUT /authors/:id request
+func (h *AuthorHandler) UpdateAuthor(c *fiber.Ctx) error {
+	id, err := c.ParamsInt("id")
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid author ID",
+		})
+	}
+
+	var request AuthorRequest
+	if err := c.BodyParser(&request); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Invalid request body",
+		})
+	}
+
+	if request.Name == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"error": "Name is required",
+		})
+	}
+
+	dto, err := h.service.UpdateAuthor(uint(id), request)
+	if err != nil {
+		if err.Error() == "author not found" {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(dto)
+}
+
 // GetAuthor handles GET /authors/:id request
 func (h *AuthorHandler) GetAuthor(c *fiber.Ctx) error {
 	id, err := c.ParamsInt("id")
@@ -42,14 +85,19 @@ func (h *AuthorHandler) GetAuthor(c *fiber.Ctx) error {
 		})
 	}
 
-	author, err := h.service.GetAuthor(uint(id))
+	dto, err := h.service.GetAuthor(uint(id))
 	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+		if err.Error() == "author not found" {
+			return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+				"error": err.Error(),
+			})
+		}
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
 	}
 
-	return c.JSON(author)
+	return c.JSON(dto)
 }
 
 // GetAuthors handles GET /authors request
@@ -80,4 +128,5 @@ func (h *AuthorHandler) RegisterRoutes(app *fiber.App) {
 	authors.Post("/", h.CreateAuthor)
 	authors.Get("/", h.GetAuthors)
 	authors.Get("/:id", h.GetAuthor)
+	authors.Put("/:id", h.UpdateAuthor)
 }

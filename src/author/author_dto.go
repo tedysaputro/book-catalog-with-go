@@ -1,7 +1,7 @@
 package author
 
-// AuthorCreateRequest represents the request body for creating an author
-type AuthorCreateRequest struct {
+// AuthorRequest represents the request body for creating an author
+type AuthorRequest struct {
 	Name        string `json:"name" validate:"required"`
 	Description string `json:"description"`
 }
