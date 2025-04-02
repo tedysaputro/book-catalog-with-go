@@ -1,0 +1,8 @@
+#git ignore for go and make
+bin/
+
+# IntelliJ
+.idea
+*.ipr
+*.iml
+*.iws
