@@ -1,4 +1,4 @@
-package tests
+package author_test
 
 import (
 	"bytes"

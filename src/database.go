@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/tedysaputro/book-catalog-with-go/src/author"
+	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -28,12 +29,13 @@ func InitDB() {
 		log.Fatal("Failed to connect to database:", err)
 	}
 
-	// Set the database instance for the author model
+	// Set the database instance for the models
 	author.SetDB(db)
+	publisher.SetDB(db)
 	DB = db
 
 	// Auto migrate the database
-	err = DB.AutoMigrate(&author.Author{})
+	err = DB.AutoMigrate(&author.Author{}, &publisher.Publisher{})
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
