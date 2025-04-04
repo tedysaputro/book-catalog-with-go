@@ -1,7 +1,7 @@
 .PHONY: build clean run db-setup test test-setup test-cleanup test-data-preload-setup dev-setup dev
 
 build:
-	go build -o bin/book-catalog ./src
+	go build -o bin/book-catalog ./cmd/server
 
 clean:
 	rm -rf bin/

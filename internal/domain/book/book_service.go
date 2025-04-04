@@ -4,8 +4,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/tedysaputro/book-catalog-with-go/src/author"
-	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/author"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/publisher"
 )
 
 // BookService defines the interface for book operations

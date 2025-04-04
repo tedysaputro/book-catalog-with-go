@@ -1,12 +1,12 @@
-package main
+package http
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/tedysaputro/book-catalog-with-go/src/author"
-	"github.com/tedysaputro/book-catalog-with-go/src/book"
-	"github.com/tedysaputro/book-catalog-with-go/src/category"
-	"github.com/tedysaputro/book-catalog-with-go/src/hello"
-	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/author"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/book"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/category"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/hello"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/publisher"
 )
 
 // SetupRoutes configures all application routes

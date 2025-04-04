@@ -1,4 +1,4 @@
-package main
+package database
 
 import (
 	"fmt"
@@ -6,10 +6,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/tedysaputro/book-catalog-with-go/src/author"
-	"github.com/tedysaputro/book-catalog-with-go/src/book"
-	"github.com/tedysaputro/book-catalog-with-go/src/category"
-	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/author"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/book"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/category"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/publisher"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -32,10 +32,10 @@ func InitDB() {
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
 		logger.Config{
-			SlowThreshold:             time.Second,   // Slow SQL threshold
-			LogLevel:                  logger.Info,   // Log level (Silent, Error, Warn, Info)
-			IgnoreRecordNotFoundError: false,        // Include not found error
-			Colorful:                  true,         // Enable color
+			SlowThreshold:             time.Second, // Slow SQL threshold
+			LogLevel:                  logger.Info, // Log level (Silent, Error, Warn, Info)
+			IgnoreRecordNotFoundError: false,       // Include not found error
+			Colorful:                  true,        // Enable color
 		},
 	)
 

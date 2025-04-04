@@ -1,8 +1,8 @@
 package book
 
 import (
-	"github.com/tedysaputro/book-catalog-with-go/src/author"
-	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/author"
+	"github.com/tedysaputro/book-catalog-with-go/internal/domain/publisher"
 )
 
 // BookRequest represents the request payload for creating/updating a book

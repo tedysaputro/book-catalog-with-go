@@ -4,11 +4,13 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/tedysaputro/book-catalog-with-go/internal/infrastructure/database"
+	"github.com/tedysaputro/book-catalog-with-go/internal/infrastructure/http"
 )
 
 func main() {
 	// Initialize database
-	InitDB()
+	database.InitDB()
 
 	// Create Fiber app
 	app := fiber.New(fiber.Config{
@@ -16,7 +18,7 @@ func main() {
 	})
 
 	// Setup routes
-	SetupRoutes(app)
+	http.SetupRoutes(app)
 
 	// Start server
 	log.Fatal(app.Listen(":8080"))
