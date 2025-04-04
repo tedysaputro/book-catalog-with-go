@@ -91,8 +91,6 @@ func (s *bookServiceImpl) GetBook(id uint) (*BookDetailResponse, error) {
 		Year:        book.Year,
 		Publisher:   publisherDTO,
 		Authors:     authorDTOs,
-		CreatedAt:   book.CreatedAt,
-		UpdatedAt:   book.UpdatedAt,
 	}, nil
 }
 
@@ -128,8 +126,6 @@ func (s *bookServiceImpl) GetBooks(p uint, limit uint, sortBy string, direction 
 			Year:        book.Year,
 			Publisher:   publisherDTO,
 			Authors:     authorDTOs,
-			CreatedAt:   book.CreatedAt,
-			UpdatedAt:   book.UpdatedAt,
 		}
 		bookDTOs = append(bookDTOs, dto)
 	}
@@ -199,8 +195,6 @@ func (s *bookServiceImpl) UpdateBook(id uint, request BookRequest) (*BookDetailR
 		Year:        updatedBook.Year,
 		Publisher:   publisherDTO,
 		Authors:     authorDTOs,
-		CreatedAt:   updatedBook.CreatedAt,
-		UpdatedAt:   updatedBook.UpdatedAt,
 	}, nil
 }
 

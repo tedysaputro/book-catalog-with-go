@@ -1,8 +1,6 @@
 package book
 
 import (
-	"time"
-
 	"github.com/tedysaputro/book-catalog-with-go/src/author"
 	"github.com/tedysaputro/book-catalog-with-go/src/publisher"
 )
@@ -30,8 +28,6 @@ type BookDetailResponse struct {
 	Year        uint                   `json:"year"`
 	Publisher   publisher.PublisherDTO `json:"publisher"`
 	Authors     []author.AuthorDTO     `json:"authors"`
-	CreatedAt   time.Time              `json:"created_at"`
-	UpdatedAt   time.Time              `json:"updated_at"`
 }
 
 // BookListResponse represents the response payload for multiple books

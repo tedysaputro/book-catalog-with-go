@@ -19,17 +19,26 @@ func SetDB(database *gorm.DB) {
 
 // Book represents a book in the catalog
 type Book struct {
-	ID          uint           `gorm:"primaryKey" json:"id"`
-	Title       string         `gorm:"type:varchar(200);not null" json:"title"`
-	Description string         `gorm:"type:varchar(1000)" json:"description"`
-	Pages       uint          `gorm:"not null" json:"pages"`
-	Year        uint          `gorm:"not null" json:"year"`
-	PublisherID uint          `gorm:"not null" json:"publisher_id"`
+	ID          uint                `gorm:"primaryKey" json:"id"`
+	Title       string              `gorm:"type:varchar(200);not null" json:"title"`
+	Description string              `gorm:"type:varchar(1000)" json:"description"`
+	Pages       uint                `gorm:"not null" json:"pages"`
+	Year        uint                `gorm:"not null" json:"year"`
+	PublisherID uint                `gorm:"not null" json:"publisher_id"`
 	Publisher   publisher.Publisher `gorm:"foreignKey:PublisherID" json:"publisher"`
-	Authors     []author.Author    `gorm:"many2many:book_authors;" json:"authors"`
-	CreatedAt   time.Time      `json:"created_at"`
-	UpdatedAt   time.Time      `json:"updated_at"`
-	DeletedAt   gorm.DeletedAt `gorm:"index" json:"deleted_at,omitempty"`
+	Authors     []author.Author     `gorm:"many2many:book_authors;" json:"authors"`
+	CreatedAt   time.Time           `json:"created_at"`
+	UpdatedAt   time.Time           `json:"updated_at"`
+	DeletedAt   gorm.DeletedAt      `gorm:"index" json:"deleted_at,omitempty"`
+}
+
+// BookQuery represents a projection of book data with publisher and author information
+type BookQuery struct {
+	ID            uint   `json:"id"`
+	Title         string `json:"title"`
+	Description   string `json:"description"`
+	PublisherID   uint   `json:"publisher_id"`
+	PublisherName string `json:"publisher_name"`
 }
 
 // Create inserts a new Book record
@@ -45,7 +54,7 @@ func (b *Book) Update() error {
 	if err := b.Validate(); err != nil {
 		return err
 	}
-	
+
 	// Start a transaction
 	tx := db.Begin()
 	if tx.Error != nil {
